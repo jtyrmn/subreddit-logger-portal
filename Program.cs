@@ -1,7 +1,14 @@
+using subreddit_logger_portal.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//the database service
+builder.Services.Configure<ListingsDatabaseSettings>(
+    builder.Configuration.GetSection("ListingsDatabase")
+);
+builder.Services.AddSingleton<ListingsService>();
 
 var app = builder.Build();
 
@@ -28,7 +35,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "listings",
     pattern: "listings/{id?}",
-    defaults: new {controller = "Listings", action = "Index"}
+    defaults: new { controller = "Listings", action = "Index" }
 );
 
 app.Run();

@@ -1,0 +1,15 @@
+@model subreddit_logger_portal.Models.ListingsViewModel;
+
+@{
+    ViewData["Title"] = "Listings";
+}
+
+<div class="text-center">
+    @{
+        //just list all the listings off for now
+        foreach (ListingModel listing in @Model.Listings)
+        {
+            <p>@listing?.MetaData?.Title</p>
+        }
+    }
+</div>
