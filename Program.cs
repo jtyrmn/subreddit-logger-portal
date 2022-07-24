@@ -1,4 +1,5 @@
 using subreddit_logger_portal.Models;
+using subreddit_logger_portal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

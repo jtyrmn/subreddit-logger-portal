@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using subreddit_logger_portal.Models;
+using subreddit_logger_portal.Services;
 
 namespace subreddit_logger_portal.Controllers;
 

@@ -1,25 +1,25 @@
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 using subreddit_logger_portal.Models;
 
+namespace subreddit_logger_portal.Services;
+
 /*
-    ListingService manages the listings database connection
+    ListingService handles everything to do with listings, such as holding a 
+    database instance or TODO: retrieving listings from cache
 */
 
 public class ListingsService
 {
-    private readonly IMongoCollection<ListingModel> listingsCollection;
+    private readonly ListingsDatabaseHandler database;
 
     public ListingsService(IOptions<ListingsDatabaseSettings> listingsDatabaseSettings)
     {
-        MongoClient client = new MongoClient(listingsDatabaseSettings.Value.ConnectionString);
-        IMongoDatabase database = client.GetDatabase(listingsDatabaseSettings.Value.DatabaseName);
-        listingsCollection = database.GetCollection<ListingModel>(listingsDatabaseSettings.Value.ListingsCollectionName);
+        database = new ListingsDatabaseHandler(
+            listingsDatabaseSettings.Value.ConnectionString,
+            listingsDatabaseSettings.Value.DatabaseName,
+            listingsDatabaseSettings.Value.ListingsCollectionName
+        );
     }
 
-    //every document
-    public async Task<List<ListingModel>> GetAll()
-    {
-        return await listingsCollection.Find(_ => true).ToListAsync();
-    }
+    public async Task<List<ListingModel>> GetAll() => await database.GetAll();
 }
