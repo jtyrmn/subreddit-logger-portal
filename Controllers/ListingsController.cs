@@ -14,10 +14,33 @@ public class ListingsController : Controller
         this.listingsService = listingsService;
     }
 
-    public async Task<IActionResult> Index(string id = "n/a")
+    public async Task<IActionResult> Index(string? id)
     {
-        //for the meantime, just grab and display everything
-        List<ListingModel> listings = await listingsService.GetAll();
-        return View(new ListingsViewModel(listings));
+        //if the url contains an ID
+        if (id is not null)
+        {
+            ListingModel? listing = await listingsService.Get(id);
+            //not found?
+            if (listing is null)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return View("NotFound");
+            }
+
+            return View("SingleListing", listing);
+        }
+        else
+        {
+            //if no ID, return everything
+            List<ListingModel> listings = await listingsService.GetAll();
+            //not found?
+            if (listings is null)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return View("NotFound");
+            }
+
+            return View("ManyListings", new ListingsViewModel(listings));
+        }
     }
 }

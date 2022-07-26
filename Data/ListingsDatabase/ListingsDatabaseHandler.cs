@@ -18,8 +18,15 @@ public class ListingsDatabaseHandler
     }
 
     //get every listing. Probably should only use this for testing
-    public async Task<List<ListingModel>> GetAll()
+    public async Task<List<ListingModel>?> GetAll()
     {
         return await collection.Find(_ => true).ToListAsync();
+    }
+
+    //get a listing by ID
+    public async Task<ListingModel?> Get(string id) {
+        return await collection.Find(
+            Builders<ListingModel>.Filter.Eq("_id", id)
+        ).FirstOrDefaultAsync();
     }
 }

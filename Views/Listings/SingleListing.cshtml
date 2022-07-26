@@ -1,0 +1,27 @@
+@model subreddit_logger_portal.Models.ListingModel;
+
+@{
+    ViewData["Title"] = @Model.MetaData?.Title ?? "Listing";
+}
+
+@{
+    //this function converts the unix times recieved in the Model (ListingModel.ListingsEntryModel.DateQueried) and converts it to a human-readable time format
+    string toReadableTime(int unixtime) {
+        System.DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        System.DateTime current = epoch.AddSeconds(unixtime);
+        
+        return current.ToShortDateString() + " " + current.ToShortTimeString() + " utc";
+    }
+}
+
+<div class="text-center">
+    <p>@Model.MetaData?.Title</p>
+
+    @if (@Model.Entries is not null)
+    {
+        foreach (ListingModel.ListingEntryModel entry in @Model.Entries)
+        {
+            <p>@toReadableTime(entry.DateQueried ?? 0): votes = @entry.Upvotes comments = @entry.Comments</p>
+        }
+    }
+</div>

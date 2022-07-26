@@ -9,7 +9,7 @@
         //just list all the listings off for now
         foreach (ListingModel listing in @Model.Listings)
         {
-            <p>@listing?.MetaData?.Title</p>
+            <p>@listing?.MetaData?.Title: @listing?.Id</p>
         }
     }
 </div>

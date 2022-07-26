@@ -21,5 +21,8 @@ public class ListingsService
         );
     }
 
-    public async Task<List<ListingModel>> GetAll() => await database.GetAll();
+    //following functions are just wrappers around database member
+
+    public async Task<List<ListingModel>?> GetAll() => await database.GetAll();
+    public async Task<ListingModel?> Get(string id) => await database.Get(id);
 }
