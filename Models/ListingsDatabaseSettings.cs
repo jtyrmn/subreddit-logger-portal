@@ -2,9 +2,9 @@ namespace subreddit_logger_portal.Models;
 
 public class ListingsDatabaseSettings
 {
-    public string ConnectionString { get; set; } = null!;
+    public string? Address { get; set; } // internet address of subreddit-logger-database service
 
-    public string DatabaseName { get; set; } = null!;
-
-    public string ListingsCollectionName { get; set; } = null!;
+    // parameters for ManyListings page
+    // how many listings to be displayed on a page at once
+    public int? NumListingsPerPage { get; set; }
 }

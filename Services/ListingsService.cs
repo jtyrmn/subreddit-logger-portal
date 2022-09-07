@@ -4,22 +4,32 @@ using subreddit_logger_portal.Models;
 namespace subreddit_logger_portal.Services;
 
 /*
-    ListingService handles everything to do with listings, such as holding a 
-    database instance or TODO: retrieving listings from cache
+    ListingService handles everything to do with listings, such as holding an
+    instance of the listings database service
 */
 
 public class ListingsService
 {
     private readonly ListingsDatabaseHandler database;
 
+    /*
+        Max amount of listings displayed on a page before loading another page
+
+        shouldn't be here; this service deals with listings, not the listings
+        website page. I should've split this into a ListingsService and
+        ListingsPageService or something but that will take some refactoring and
+        is a problem for future me. TODO:
+    */
+    private readonly int numListingsPerPage;
+
     public ListingsService(IOptions<ListingsDatabaseSettings> listingsDatabaseSettings)
     {
-        database = new ListingsDatabaseHandler(
-            listingsDatabaseSettings.Value.ConnectionString,
-            listingsDatabaseSettings.Value.DatabaseName,
-            listingsDatabaseSettings.Value.ListingsCollectionName
-        );
+        // TODO: validate that listingsDatabaseSettings contains non-null values
+
+        database = new ListingsDatabaseHandler(listingsDatabaseSettings.Value.Address);
+        numListingsPerPage = (int)listingsDatabaseSettings.Value.NumListingsPerPage;
     }
 
-    public async Task<List<ListingModel>> GetAll() => await database.GetAll();
+    public async Task<ListingModel> GetOne(string id) => await database.GetOne(id);
+    public async Task<List<ListingModel>> GetMany(int skip) => await database.GetMany(numListingsPerPage, skip);
 }

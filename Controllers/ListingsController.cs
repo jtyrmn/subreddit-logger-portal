@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using subreddit_logger_portal.Models;
 using subreddit_logger_portal.Services;
 
@@ -14,10 +16,22 @@ public class ListingsController : Controller
         this.listingsService = listingsService;
     }
 
-    public async Task<IActionResult> Index(string id = "n/a")
-    {
-        //for the meantime, just grab and display everything
-        List<ListingModel> listings = await listingsService.GetAll();
-        return View(new ListingsViewModel(listings));
+    public async Task<IActionResult> Index(string? id = "")
+    {  
+        // is the path parameter specified?
+        if (!String.IsNullOrWhiteSpace(id))
+        {
+            Console.WriteLine("single");
+            // specific listing
+            ListingModel listing = await listingsService.GetOne(id);
+            return View("Single", new SingleListingViewModel(listing));
+        }
+        else
+        {
+            Console.WriteLine("many");
+            // generic page of arbitrary listings
+            List<ListingModel> listings = await listingsService.GetMany(0);
+            return View("Many", new ManyListingsViewModel(listings));
+        }
     }
 }
