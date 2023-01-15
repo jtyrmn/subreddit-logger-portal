@@ -1,0 +1,23 @@
+@model subreddit_logger_portal.Models.SingleListingViewModel;
+
+@{
+    ViewData["Title"] = "Listings";
+}
+
+<div class="text-center">
+    @{
+        @Model.Listing.Id
+        <br>
+        @Model.Listing.MetaData?.Title
+        <br>
+        @Model.Listing.MetaData?.ListingId
+        
+        <table>
+        @if(Model.Listing?.Entries != null) {
+            foreach(ListingModel.ListingEntryModel entry in Model.Listing.Entries) {
+                <tr> <td>@entry.DateQueried</td> <td>@entry.Upvotes</td> <td>@entry.Comments</td> </tr>
+            }
+        }
+        </table>
+    }
+</div>

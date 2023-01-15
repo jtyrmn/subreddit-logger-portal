@@ -1,0 +1,14 @@
+@model subreddit_logger_portal.Models.ManyListingsViewModel;
+
+@{
+    ViewData["Title"] = "Listings";
+}
+
+<div class="text-center">
+    <ul>
+        @foreach (ListingModel listing in @Model.Listings)
+        {
+            <li>@listing.Id: @listing.MetaData?.Title</li>
+        }
+    </ul>
+</div>
