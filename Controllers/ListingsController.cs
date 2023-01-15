@@ -17,18 +17,16 @@ public class ListingsController : Controller
     }
 
     public async Task<IActionResult> Index(string? id = "")
-    {  
+    {
         // is the path parameter specified?
         if (!String.IsNullOrWhiteSpace(id))
         {
-            Console.WriteLine("single");
             // specific listing
             ListingModel listing = await listingsService.GetOne(id);
             return View("Single", new SingleListingViewModel(listing));
         }
         else
         {
-            Console.WriteLine("many");
             // generic page of arbitrary listings
             List<ListingModel> listings = await listingsService.GetMany(0);
             return View("Many", new ManyListingsViewModel(listings));
