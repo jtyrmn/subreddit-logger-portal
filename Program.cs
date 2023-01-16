@@ -33,10 +33,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 //because I want a cleaner url for the listings endpoint
-app.MapControllerRoute(
-    name: "listings",
-    pattern: "listings/{id?}",
-    defaults: new { controller = "Listings", action = "Index" }
-);
+// app.MapControllerRoute(
+//     name: "listings",
+//     pattern: "listings/{id?}",
+//     defaults: new { controller = "Listings", action = "Index" }
+// );
 
 app.Run();

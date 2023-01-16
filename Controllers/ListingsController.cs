@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using subreddit_logger_portal.Models;
@@ -9,27 +10,30 @@ namespace subreddit_logger_portal.Controllers;
 // /listings endpoint
 public class ListingsController : Controller
 {
-    private readonly ListingsService listingsService;
+    private readonly ListingsService _listingsService;
+    private readonly ILogger<ListingsController> _logger;
 
-    public ListingsController(ListingsService listingsService)
+    public ListingsController(ListingsService listingsService, ILogger<ListingsController> logger)
     {
-        this.listingsService = listingsService;
+        this._listingsService = listingsService;
+        this._logger = logger;
     }
 
-    public async Task<IActionResult> Index(string? id = "")
-    {
-        // is the path parameter specified?
-        if (!String.IsNullOrWhiteSpace(id))
-        {
-            // specific listing
-            ListingModel listing = await listingsService.GetOne(id);
+    // get a single specific listing
+    public async Task<IActionResult> Single(string? id) {
+        if(!String.IsNullOrEmpty(id)) {
+            ListingModel listing = await _listingsService.GetOne(id);
             return View("Single", new SingleListingViewModel(listing));
+        } else {
+            throw new Exception("missing id");
         }
-        else
-        {
-            // generic page of arbitrary listings
-            List<ListingModel> listings = await listingsService.GetMany(0);
-            return View("Many", new ManyListingsViewModel(listings));
-        }
+        
+    }
+
+    // generic page of many listings
+    public async Task<IActionResult> Index(int? skip)
+    {   
+        List<ListingModel> listings = await _listingsService.GetMany(skip ?? 0);
+        return View("Many", new ManyListingsViewModel(listings));
     }
 }

@@ -46,3 +46,11 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.text-left {
+  text-align: justify;
+}
+
+.listing-title {
+  font-style: oblique;
+}

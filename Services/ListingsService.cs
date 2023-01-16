@@ -31,5 +31,5 @@ public class ListingsService
     }
 
     public async Task<ListingModel> GetOne(string id) => await database.GetOne(id);
-    public async Task<List<ListingModel>> GetMany(int skip) => await database.GetMany(numListingsPerPage, skip);
+    public async Task<List<ListingModel>> GetMany(int skip) => await database.GetMany(numListingsPerPage, skip * numListingsPerPage );
 }

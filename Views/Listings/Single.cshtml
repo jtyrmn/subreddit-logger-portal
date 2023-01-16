@@ -4,20 +4,38 @@
     ViewData["Title"] = "Listings";
 }
 
-<div class="text-center">
+<link rel="stylesheet" href="~/css/site.css" />
+<div class="text-right">
+    <div class="listing-title">
+        @Model.Listing.MetaData?.ListingId: @Model.Listing.MetaData?.Title
+    </div>    
+    
     @{
-        @Model.Listing.Id
-        <br>
-        @Model.Listing.MetaData?.Title
-        <br>
-        @Model.Listing.MetaData?.ListingId
-        
-        <table>
-        @if(Model.Listing?.Entries != null) {
-            foreach(ListingModel.ListingEntryModel entry in Model.Listing.Entries) {
-                <tr> <td>@entry.DateQueried</td> <td>@entry.Upvotes</td> <td>@entry.Comments</td> </tr>
-            }
-        }
-        </table>
+        long? createdDate = (long)@Model.Listing.MetaData?.DateCreated;
+        long? queriedDate = (long)@Model.Listing.MetaData?.DateQueried;
+
+        long? datesOffset = (createdDate is not null && queriedDate is not null) ? queriedDate - createdDate : null;
     }
+
+    @if(createdDate is not null) {
+        <div>
+            Post created at @DateTimeOffset.FromUnixTimeSeconds(createdDate ?? default(long)).DateTime
+        </div>
+    }
+    <br>
+    @if(queriedDate is not null) {
+        <div>
+            First queried at @DateTimeOffset.FromUnixTimeSeconds(queriedDate ?? default(long)).DateTime
+        </div>
+    }
+    
+    <table>
+    @if(Model.Listing?.Entries != null) {
+        foreach(ListingModel.ListingEntryModel entry in Model.Listing.Entries) {
+            DateTime dateQueried = DateTimeOffset.FromUnixTimeSeconds((long)entry.DateQueried).DateTime;
+
+            <tr> <td>@dateQueried.ToString();</td> <td>@entry.Upvotes upvotes</td> <td>@entry.Comments comments</td> </tr>
+        }
+    }
+    </table>
 </div>
