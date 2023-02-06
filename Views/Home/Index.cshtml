@@ -4,7 +4,12 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+
+    Please insert the ID of a reddit post.
     <form asp-controller="listings" asp-action="single" method="get">
         <input name="id"></input>
     </form>
+
+    Or view listings currently being tracked. <br>
+    <a asp-controller="listings" asp-action="index">View all listings</a>
 </div>

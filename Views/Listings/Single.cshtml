@@ -4,8 +4,7 @@
     ViewData["Title"] = "Listings";
 }
 
-<link rel="stylesheet" href="~/css/site.css" />
-<div class="text-right">
+<div class="text-left">
     <div class="listing-title">
         @Model.Listing.MetaData?.ListingId: @Model.Listing.MetaData?.Title
     </div>    
@@ -22,19 +21,19 @@
             Post created at @DateTimeOffset.FromUnixTimeSeconds(createdDate ?? default(long)).DateTime
         </div>
     }
-    <br>
     @if(queriedDate is not null) {
         <div>
             First queried at @DateTimeOffset.FromUnixTimeSeconds(queriedDate ?? default(long)).DateTime
         </div>
     }
+    <br>
     
     <table>
     @if(Model.Listing?.Entries != null) {
         foreach(ListingModel.ListingEntryModel entry in Model.Listing.Entries) {
             DateTime dateQueried = DateTimeOffset.FromUnixTimeSeconds((long)entry.DateQueried).DateTime;
 
-            <tr> <td>@dateQueried.ToString();</td> <td>@entry.Upvotes upvotes</td> <td>@entry.Comments comments</td> </tr>
+            <tr> <td>@dateQueried.ToString(): </td> <td>@entry.Upvotes upvotes</td> <td>@entry.Comments comments</td> </tr>
         }
     }
     </table>

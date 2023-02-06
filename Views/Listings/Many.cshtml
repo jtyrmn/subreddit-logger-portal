@@ -8,7 +8,7 @@
     <ul>
         @foreach (ListingModel listing in @Model.Listings)
         {
-            <li>@listing.Id: @listing.MetaData?.Title</li>
+            <li>@listing.Id: @listing.MetaData?.Title <a asp-controller="listings" asp-action="single" asp-route-id=@listing.Id>view</a></li>
         }
     </ul>
 </div>
