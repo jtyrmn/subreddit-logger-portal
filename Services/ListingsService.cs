@@ -22,12 +22,13 @@ public class ListingsService
     */
     private readonly int numListingsPerPage;
 
-    public ListingsService(IOptions<ListingsDatabaseSettings> listingsDatabaseSettings)
+    public ListingsService(EnvironmentVariablesModel configParameters)
     {
-        // TODO: validate that listingsDatabaseSettings contains non-null values
+        database = new ListingsDatabaseHandler(
+            configParameters.SUBREDDIT_LOGGER_DATABASE_LOCATION ?? throw new ArgumentNullException(nameof(configParameters.SUBREDDIT_LOGGER_DATABASE_LOCATION))
+        );
 
-        database = new ListingsDatabaseHandler(listingsDatabaseSettings.Value.Address);
-        numListingsPerPage = (int)listingsDatabaseSettings.Value.NumListingsPerPage;
+        numListingsPerPage = configParameters.NUM_DISPLAY_LISTINGS ?? 25;
     }
 
     public async Task<ListingModel> GetOne(string id) => await database.GetOne(id);

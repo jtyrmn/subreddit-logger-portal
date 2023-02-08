@@ -5,10 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-//the database service
-builder.Services.Configure<ListingsDatabaseSettings>(
-    builder.Configuration.GetSection("ListingsDatabase")
-);
+// configuration
+EnvironmentVariablesModel environmentVariables = new();
+builder.Configuration.Bind(environmentVariables);
+builder.Services.AddSingleton(environmentVariables);
+
+// the database service
 builder.Services.AddSingleton<ListingsService>();
 
 var app = builder.Build();
