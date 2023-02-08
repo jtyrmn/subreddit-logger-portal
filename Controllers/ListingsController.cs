@@ -34,6 +34,6 @@ public class ListingsController : Controller
     public async Task<IActionResult> Index(int? skip)
     {   
         List<ListingModel> listings = await _listingsService.GetMany(skip ?? 0);
-        return View("Many", new ManyListingsViewModel(listings));
+        return View("Many", new ManyListingsViewModel(listings, skip));
     }
 }

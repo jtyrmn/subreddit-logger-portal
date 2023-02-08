@@ -6,9 +6,11 @@ namespace subreddit_logger_portal.Models;
 public class ManyListingsViewModel
 {
     public List<ListingModel> Listings { get; }
+    public int? skip {get; set;} // for pagination support
 
-    public ManyListingsViewModel(List<ListingModel> listings)
+    public ManyListingsViewModel(List<ListingModel> listings, int? skip)
     {
         this.Listings = listings;
+        this.skip = skip;
     }
 }

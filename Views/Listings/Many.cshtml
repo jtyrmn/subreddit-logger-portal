@@ -10,5 +10,12 @@
         {
             <li>@listing.Id: @listing.MetaData?.Title <a asp-controller="listings" asp-action="single" asp-route-id=@listing.Id>view</a></li>
         }
+
+
+        @{int pageNumber = @Model.skip ?? 0;}
+
+        <a asp-controller="listings" asp-route-skip=@(Math.Max(0, pageNumber-1))>previous</a>
+        @pageNumber
+        <a asp-controller="listings" asp-route-skip=@(pageNumber+1)>next</a>
     </ul>
 </div>
